@@ -19,7 +19,10 @@
     <form action="/search" method="POST">
         <div class="form-row">
             <div class="col-sm-9 col-md-4">
+              <!-- This will cause the search to return none because you are overwriting the Book search 
                 <input type="search" class="form-control" value="{{ request.form.search }}" name="search" placeholder="Title, year,  Author or ISBN">
+              -->
+            {{ form.category.label }} {{ form.category(placeholder='Title, year,  Author or ISBN') }}
             </div>
         </div>
         <button class="btn btn-primary"> Search </button>
