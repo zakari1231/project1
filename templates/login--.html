@@ -1,0 +1,19 @@
+{% extends "base_users.html" %} {% block title %} LOGIN {% endblock %} {% block body %}
+<div class="signin">
+    <form action="/login" method="POST">
+        <h1>Sign in</h1>
+        <input type="text" name="username" placeholder="entre username">
+        <input type="password" name="password" minlength="8" required placeholder="entre password">
+        <button class="btn">Sign in</button>
+    </form>
+    <div class="alert alert-success" role="alert">
+        {{ message }}
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock %}

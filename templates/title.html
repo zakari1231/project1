@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+</head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<body>
+    <a href="/">Home</a>
+    <a href="/logout">Logout</a>
+    <a href="\books">list of all books</a>
+    <a href="\search">search here</a>
+
+
+    <form action="/search" method="POST">
+        <div class="form-row">
+            <div class="col-sm-9 col-md-4">
+                <input type="search" class="form-control" name="search" placeholder="Title, Author or ISBN">
+            </div>
+        </div>
+        <button class="btn btn-primary"> Search </button>
+    </form>
+    {% block body %}
+    <h4>Books Details:</h4>
+    {% for result in result_1 %}
+    <ul>
+        <li> Title: {{title}} </li>
+        <li> ISBN: {{result['isbn']}} </li>
+        <li> Author: {{author}} </li>
+        <li> Publication Year: {{year}} </li>
+        <li> Goodreads rating: {{rating}} ({{count}}) </li>
+    </ul>
+    {% endfor %} {% if reviews|length %}
+    <h4>User Reviews:</h4>
+    <ul>
+        {% for review in reviews %}
+        <li> {{review['full_name']}}: ({{review['rating']}} Stars) {{review['review']}} </li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+    <h4> Leave a review for {{title}}:</h4>
+
+    <form action="/submit" method="POST">
+        <div>
+            <div class="form-inline">
+                <label>Rating</label>
+                <select class="custom-select my-1 mr-sm-2" name="rating">
+                        <option selected>Choose...</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+            </div>
+            Write your review (Optional)
+            <div class="row">
+                <textarea class="form-control" placeholder="Type your review here" name="review" rows="3" cols="70"></textarea>
+            </div>
+            <input type="hidden" value="{{isbn|safe}}" name="isbn">
+            <button class="btn btn-primary"> Submit </button>
+        </div>
+    </form>
+    {% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+
+    <title>search page</title>
+</head>
+
+<body>
+
+    <div class="form-wrapper"></div>
+    <a href="/logout">Logout</a>
+    <a href="/">Home</a>
+
+    <h1>Search for a book:</h1>
+
+    <form action="/search" method="POST">
+        <div class="form-row">
+            <div class="col-sm-9 col-md-4">
+                <input type="search" class="form-control" value="{{ request.form.search }}" name="search" placeholder="Title, year,  Author or ISBN">
+            </div>
+        </div>
+        <button class="btn btn-primary"> Search </button>
+    </form>
+
+    <form class="search" action="/search" method="post">
+        <fieldset class="search">
+            {{ form.search.label }} {{ form.search(placeholder='search') }}
+        </fieldset>
+
+        <div class="submit-button">
+            {{ form.submit }}
+        </div>
+    </form>
+
+
+    <table>
+
+        {% if results is defined and results|length %}
+        <h6> No results found. Please try again.</h6>
+        {% else %} results ar
+        <tr>
+            <th>isbn</th>
+            <th>title</th>
+            <th>author</th>
+            <th>year</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+
+            <th><a href="api/{{result['isbn']}}"> {{result['isbn']}}</th>
+
+            <th><a href="books/{{result['title']}}"> {{result['title']}}</th>
+
+            <th> {{result['author']}}</th>
+
+            <th> {{result['year']}}</th>
+
+        </tr>
+        {% endfor %} {% endif %}
+
+
+    </table>
+
+    </div>

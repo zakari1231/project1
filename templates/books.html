@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>list of all the books</title>
+</head>
+
+<body>
+
+    <style>
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            width: 40%;
+            text-align: center;
+        }
+        
+        tr {
+            background-color: #41775e;
+        }
+    </style>
+
+
+    <table>
+
+        <tr>
+            <th>isbn</th>
+            <th>title</th>
+            <th>author</th>
+            <th>year</th>
+        </tr>
+        {% for result in list_of_book %}
+        <tr>
+
+            <th><a href="api/{{result['isbn']}}"> {{result['isbn']}}</th>
+
+            <th><a href="books/{{result['title']}}"> {{result['title']}}</th>
+
+            <th> {{result['author']}}</th>
+
+            <th> {{result['year']}}</th>
+
+        </tr>
+        {% endfor %} 
+
+    </table>
+
+
+</body>
+
+</html>

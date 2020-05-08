@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>welcom to book review</title>
+</head>
+
+<body>
+    <form method="POST">
+        Username: <input type="text" required><br> Email: <input type="Email" name="Email" required><br> Password: <input type="Password" minlength="8" required><br>
+        <input type="submit" value="Register">
+        <input type="reset">
+
+    </form>
+
+    <a href="\books">list of all books</a>
+
+
+    <a href="\login">log in here</a>
+    <a href="\logout">log out here</a>
+    <a href="\search">search here</a>
+
+
+    <h1>{{ message }} </h1>
+    {% for users in users %}
+    <h1>{{ message }} {{users['full_name']}} </h1>
+    {% endfor %}
+
+
+
+
+
+
+
+
+</body>
+
+</html>

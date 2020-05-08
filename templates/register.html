@@ -1,0 +1,17 @@
+{% extends "base_users.html" %} {% block title %} REGISTER {% endblock %} {% block body %}
+<div class="signin">
+
+    {{ message }}
+
+    <form action="/register" method="POST">
+        <h1>Sign in</h1>
+        <input type="text" name="full_name" placeholder="FULL NAME">
+        <input type="text" name="username" required placeholder="Username">
+        <input type="Email" name="email" name="Email" required placeholder="Email">
+        <input type="Password" name="password" minlength="8" required placeholder="entre password">
+        <input type="submit" value="Register">
+        <input type="reset">
+    </form>
+
+</div>
+{% endblock %}
