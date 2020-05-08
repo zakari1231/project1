@@ -9,8 +9,34 @@ from forms import SignupForm, LoginForm, SearchForm
 
 
 #db app..
-app = Flask(__name__) 
-app.secret_key = 'secret_key'
+app = Flask(__name__,template_folder='templates',static_url_path='')
+app.config['SECRET_KEY'] = "44e04c1e98a03ede943c9f026fd612e59b50901a5c1b6acf1713edc9743361fd"
+#TODO:INFO: you need a secret key(above). Without one FlaskForm will not work 
+#   Your application will be vunerable to CSFT attack without one.
+#   It is a secret key for a reason. For best practice,
+#   you should NOT have it visible in plain sight like this when 
+#   deploying your app in a "real-world" web application.
+
+# For this application it should be fine, but we should be mindful and follow best practice.
+"""
+### TO GET A SECRET KEY ####
+> run python from cmdline 
+
+ import secrets
+ secrets.token_hex(32)
+
+# STORE YOUR RESULTS TO ENVIRONMENT VARIABLE IN CMDLINE.
+ export FLASK_SECRET = " your secret key above (result on line no.18)
+
+#THEN USE IT IN THIS FILE LIKE THIS:
+import os
+app.config['SECRET_KEY'] = os.environ['FLASK_SECRET']
+"""
+
+#NOTE: ADDED MORE CONFIGURATION TO HELP WHEN RELOAD APP
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["TEMPLATES_AUTO_RELOAD"] = True # reload WITHOUT restarting you application
 login_manager = LoginManager(app)
 
 @login_manager.user_loader
@@ -181,21 +207,34 @@ def search():
     search = form.search.data
     if request.method == 'POST':
         search = form.search.data
-        results = Books.query(Books.title==search).all()
-        print(search)
+        #TODO:INFO:: Filter the results before calling Books.query
+        # Filter it like this
+        if not search: # check for None value
+            return " ---ROUTE TO YOUR Error PAGE ---"
+        
+        #TODO:INFO: make sure to remove spaces form beginning and end
+        # SQLAlchemy is really sensitive and particular when query for data   
+        search = search.strip() 
+        results = Books.query.filter(Books.title.ilike(f'%{search}%')).all()
+
+        #NOTE:DELETE: Delete these lines below. . This is just a test to check if result is populating correctly.
+        test = results[0] if results else {'title':'None'}
+        return f"""<h1>title: {test.title} </h1>
+                    <ul>
+                        <li>ID:{test.id}</li>
+                        <li>ISBN: {test.isbn}</li>
+                        <li>Author: {test.author}</li>
+                        <li>YEAR {test.year}</li>
+                    </ul>
+                """
+        # STOP DELETING HERE
+
+        #TODO:NEED:: return to another page to show results
+        #      You are returning to the same route so the search form 
+        #      will rendering again
         return render_template('search.html', results=results, form=form, search=search)
     return render_template('search.html', form=form, search=search)
 
-'''
-@app.route("/search", methods=['GET', 'POST'])
-def shearch():
-    if request.form == 'POST':
-        search = request.form.get("search")
-        results = Books.query.filter_by(search=request.form.search).all
-        #results = Books.query.filter(search).all()
-        return render_template('search.html', results=results, search=search)
-    return render_template('search.html')
-'''
 
 '''
 @app.route('/login', methods=['GET', 'POST'])
@@ -231,11 +270,11 @@ def login():
          
        
     return render_template("login.html")
-
 '''
 
 
 
+
 #server 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(port=5001,debug=True)

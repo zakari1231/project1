@@ -13,14 +13,19 @@ class SignupForm(FlaskForm):
     submit = SubmitField('Register')
 
 
-class LoginForm(FlaskForm):
+class LoginForm(FlaskForm): # <<-- was Form   I change it to Flask Form
     """User Login Form."""
     email = StringField('Email', validators=[DataRequired(), Email(message='Enter a valid email.')])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
-class SearchForm(Form):
+class SearchForm(FlaskForm):
     search = StringField('search')
+    #NOTE:ADDED: Added "category" to search for a title,isbn,author...etc.
+    #    :** Take a look at search.html template.
+    #TODO: You still will need to write the codes to distingish your book search.
+    #       
+    category = StringField('category')
     submit = SubmitField('search')
 
 '''
